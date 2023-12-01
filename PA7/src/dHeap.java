@@ -107,6 +107,11 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
     public void clear() {
         heap = (T[]) new Comparable[heap.length];
         nelems = 0;
+
+//        for (int i = 0; i < nelems; i++) {
+//            heap[i] = null;
+//        }
+//        nelems = 0;
     }
 
     @Override
@@ -122,48 +127,61 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
         if (index == 0) {
             return 0;
         }
-
         return (index - 1) / d;
+    }
+
+    private boolean isGreaterThan(T a, T b) {
+        return a.compareTo(b) > 0;
+    }
+
+    private boolean isLessThan(T a, T b) {
+        return a.compareTo(b) < 0;
     }
 
     private void bubbleUp(int index) {
         T item = heap[index];
-        while (index > 0 && item.compareTo(heap[parent(index)]) > 0) {
+        while (index > 0 && compare(item, heap[parent(index)])) {
             heap[index] = heap[parent(index)];
             index = parent(index);
         }
         heap[index] = item;
     }
 
+    private boolean compare(T a, T b) {
+        if (isMaxHeap) {
+            return a.compareTo(b) > 0;
+        }
+        else {
+            return a.compareTo(b) < 0;
+        }
+    }
+
     private void trickleDown(int index) {
+        T item = heap[index];
         int child;
-        T temp = heap[index];
 
         while (d * index + 1 < nelems) {
-            child = maxChild(index);
+            child = d * index + 1;
+            int end = Math.min(d * index + d, nelems - 1);
 
-            if (temp.compareTo(heap[child]) < 0) {
-                heap[index] = heap[child];
+            int chosenChild = child;
+            for (int k = child + 1; k <= end; k++) {
+                if (k < nelems && compare(heap[k], heap[chosenChild])) {
+                    chosenChild = k;
+                }
+            }
+
+            if (compare(heap[chosenChild], item)) {
+                heap[index] = heap[chosenChild];
             } else {
                 break;
             }
-            index = child;
+
+            index = chosenChild;
         }
-        heap[index] = temp;
+
+        heap[index] = item;
     }
-
-    private int maxChild(int index) {
-        int bestChild = d * index + 1;
-        int end = Math.min(d * index + d, nelems - 1);
-
-        for (int k = bestChild + 1; k <= end; k++) {
-            if (heap[k].compareTo(heap[bestChild]) > 0) {
-                bestChild = k;
-            }
-        }
-        return bestChild;
-    }
-
 
     @SuppressWarnings("unchecked")
     private void resize() {
