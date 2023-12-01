@@ -127,16 +127,49 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
     }
 
     private void bubbleUp(int index) {
-        // TODO
+        T item = heap[index];
+        while (index > 0 && item.compareTo(heap[parent(index)]) > 0) {
+            heap[index] = heap[parent(index)];
+            index = parent(index);
+        }
+        heap[index] = item;
     }
 
     private void trickleDown(int index) {
-        // TODO
+        int child;
+        T temp = heap[index];
+
+        while (d * index + 1 < nelems) {
+            child = maxChild(index);
+
+            if (temp.compareTo(heap[child]) < 0) {
+                heap[index] = heap[child];
+            } else {
+                break;
+            }
+            index = child;
+        }
+        heap[index] = temp;
     }
+
+    private int maxChild(int index) {
+        int bestChild = d * index + 1;
+        int end = Math.min(d * index + d, nelems - 1);
+
+        for (int k = bestChild + 1; k <= end; k++) {
+            if (heap[k].compareTo(heap[bestChild]) > 0) {
+                bestChild = k;
+            }
+        }
+        return bestChild;
+    }
+
 
     @SuppressWarnings("unchecked")
     private void resize() {
-        // TODO
+        T[] old = heap;
+        heap = (T[]) new Comparable[heap.length * 2];
+        System.arraycopy(old, 0, heap, 0, old.length);
     }
 
 }
