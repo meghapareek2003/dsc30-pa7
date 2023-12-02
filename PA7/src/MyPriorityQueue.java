@@ -6,8 +6,8 @@
 /**
  * Priority Queue Implementation using dHeap.
  *
- * @author TODO
- * @since TODO
+ * @author Megha Pareek
+ * @since 11/30/2023
  *
  * @param <T> the type of elements held in this collection
  */
@@ -15,6 +15,7 @@
 public class MyPriorityQueue<T extends Comparable<? super T>> {
 
     private dHeap<T> pQueue;
+    int ImplementationD = 4;
 
     /**
      * Constructor that creates a new priority queue
@@ -22,7 +23,7 @@ public class MyPriorityQueue<T extends Comparable<? super T>> {
      * @param initialSize the given size
      */
     public MyPriorityQueue(int initialSize) {
-        pQueue = new dHeap<>(4, initialSize, false);
+        pQueue = new dHeap<>(ImplementationD, initialSize, false);
     }
 
     /**
@@ -79,6 +80,7 @@ public class MyPriorityQueue<T extends Comparable<? super T>> {
 
     /**
      * Return true is the queue is empty, false otherwise
+     * @return true if the queue is empty, false otherwise
      */
     public boolean isEmpty() {
         return pQueue.size() == 0;

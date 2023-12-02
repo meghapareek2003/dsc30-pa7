@@ -9,8 +9,8 @@ import java.util.NoSuchElementException;
 /**
  * Title: dHeap Description: This program creates a Heap with d branching factor
  *
- * @author TODO
- * @since TODO
+ * @author Megha Pareek
+ * @since 11/25/2023
  *
  * @param <T> the type of elements held in this collection
  */
@@ -27,8 +27,10 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
      */
     @SuppressWarnings("unchecked")
     public dHeap() {
-        this.heap = (T[]) new Comparable[10];
-        this.d = 2;
+        int currentBranchingFactor = 2;
+        int currentHeapSize = 10;
+        this.heap = (T[]) new Comparable[currentHeapSize];
+        this.d = currentBranchingFactor;
         this.nelems = 0;
         this.isMaxHeap = true;
     }
@@ -40,8 +42,9 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
      */
     @SuppressWarnings("unchecked")
     public dHeap(int heapSize) {
+        int currentBranchingFactor = 2;
         this.heap = (T[]) new Comparable[heapSize];
-        this.d = 2;
+        this.d = currentBranchingFactor;
         this.nelems = 0;
         this.isMaxHeap = true;
     }
@@ -57,7 +60,8 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
      */
     @SuppressWarnings("unchecked")
     public dHeap(int d, int heapSize, boolean isMaxHeap) throws IllegalArgumentException {
-        if (d < 1) {
+        int minSize = 1;
+        if (d < minSize) {
             throw new IllegalArgumentException("d must be greater than or equal to 1");
         }
         this.heap = (T[]) new Comparable[heapSize];
@@ -67,11 +71,23 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
 
 
     }
-
+    /**
+     * Returns the number of elements in the heap.
+     *
+     * @return The number of elements in the heap.
+     */
     @Override
     public int size() {
         return nelems;
     }
+
+    /**
+     * Removes and returns the highest priority element in the heap.
+     * Throws NoSuchElementException if the heap is empty.
+     *
+     * @return The highest priority element in the heap.
+     * @throws NoSuchElementException if the heap is empty.
+     */
 
     @Override
     public T remove() throws NoSuchElementException {
@@ -88,6 +104,13 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
         return removedItem;
     }
 
+    /**
+     * Adds the specified item to the heap.
+     *
+     * @param item The item to be added to the heap.
+     * @throws NullPointerException if the item is null.
+     */
+
     @Override
     public void add(T item) throws NullPointerException {
         if (item == null) {
@@ -101,18 +124,23 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
         nelems++;
         bubbleUp(nelems - 1);
     }
+    /**
+     * Removes all elements from the heap, making it empty.
+     */
 
     @SuppressWarnings("unchecked")
     @Override
     public void clear() {
         heap = (T[]) new Comparable[heap.length];
         nelems = 0;
-
-//        for (int i = 0; i < nelems; i++) {
-//            heap[i] = null;
-//        }
-//        nelems = 0;
     }
+
+    /**
+     * Retrieves, but does not remove, the highest priority element in the heap.
+     *
+     * @return The highest priority element.
+     * @throws NoSuchElementException if the heap is empty.
+     */
 
     @Override
     public T element() throws NoSuchElementException {
@@ -123,6 +151,13 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
         return heap[0];
     }
 
+    /**
+     * Calculates the parent index of a given index in the heap.
+     *
+     * @param index The index for which to find the parent.
+     * @return The index of the parent.
+     */
+
     private int parent(int index) {
         if (index == 0) {
             return 0;
@@ -130,13 +165,11 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
         return (index - 1) / d;
     }
 
-    private boolean isGreaterThan(T a, T b) {
-        return a.compareTo(b) > 0;
-    }
-
-    private boolean isLessThan(T a, T b) {
-        return a.compareTo(b) < 0;
-    }
+    /**
+     * Moves the item up the heap until its order is restored.
+     *
+     * @param index The index of the item to be moved.
+     */
 
     private void bubbleUp(int index) {
         T item = heap[index];
@@ -147,6 +180,14 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
         heap[index] = item;
     }
 
+    /**
+     * Compares two elements based on whether the heap is a max heap or min heap.
+     *
+     * @param a The first element.
+     * @param b The second element.
+     * @return True if the elements need to be swapped, false otherwise.
+     */
+
     private boolean compare(T a, T b) {
         if (isMaxHeap) {
             return a.compareTo(b) > 0;
@@ -155,6 +196,12 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
             return a.compareTo(b) < 0;
         }
     }
+
+    /**
+     * Moves the item down the heap until its order is restored.
+     *
+     * @param index The index of the item to be moved.
+     */
 
     private void trickleDown(int index) {
         T item = heap[index];
@@ -183,11 +230,19 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
         heap[index] = item;
     }
 
+    /**
+     * Resizes the heap array by creating a new array with double the capacity and copying elements to it.
+     * Used when the current heap is full and needs more space to accommodate additional elements.
+     */
+
     @SuppressWarnings("unchecked")
     private void resize() {
-        T[] old = heap;
-        heap = (T[]) new Comparable[heap.length * 2];
-        System.arraycopy(old, 0, heap, 0, old.length);
+        int doubleSize = 2;
+        T[] newArray = (T[]) new Comparable[heap.length * doubleSize];
+        for (int i = 0; i < heap.length; i++) {
+            newArray[i] = heap[i];
+        }
+        heap = newArray;
     }
 
 }

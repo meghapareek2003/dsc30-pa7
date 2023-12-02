@@ -19,7 +19,7 @@ public class MNIST {
 
     public static final int NUM_TEST = 1_000;   // can be up to 10k
     // ^ recommended to change to 100 temporarily
-    public static final int NUM_TRAIN = 60_000; // can be up to 60k
+    public static final int NUM_TRAIN = 6_000; // can be up to 60k
 
     public static final int K = 3;
     public static final int IMG_DIM = 28;
@@ -53,6 +53,7 @@ public class MNIST {
         }
 
         /**
+         * Compares the priority of this DataHolder with another DataHolder.
          * @param d the other DataHolder that is being compared
          * @return an integer that determines whether priority is lower,
          *         greater, or equal to that of d
@@ -76,6 +77,7 @@ public class MNIST {
      * @param img1 the first array
      * @param img2 the second array
      * @return the Euclidean distance between img1 and img2
+     * @throws IllegalArgumentException if the array lengths do not match
      */
     public static float totalDist(float[] img1, float[] img2) throws IllegalArgumentException {
         if (img1.length != img2.length) {
@@ -114,6 +116,7 @@ public class MNIST {
      * You may assume k < n (amount of training data)
      *
      * @param closestMatches the array of DataHolders containing the k closest matches
+     * @return an integer representing the predicted label
      */
     public static int predict(DataHolder[] closestMatches) {
         int[] counts = new int[10];
