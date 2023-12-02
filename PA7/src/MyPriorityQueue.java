@@ -23,7 +23,7 @@ public class MyPriorityQueue<T extends Comparable<? super T>> {
      * @param initialSize the given size
      */
     public MyPriorityQueue(int initialSize) {
-        int implementationD = 4;
+        final int implementationD = 4;
         pQueue = new dHeap<>(implementationD, initialSize, false);
     }
 

@@ -27,7 +27,7 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
      */
     @SuppressWarnings("unchecked")
     public dHeap() {
-        int currentBranchingFactor = 2;
+        final int currentBranchingFactor = 2;
         int currentHeapSize = 10;
         this.heap = (T[]) new Comparable[currentHeapSize];
         this.d = currentBranchingFactor;
