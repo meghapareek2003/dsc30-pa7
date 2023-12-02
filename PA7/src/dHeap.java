@@ -231,7 +231,8 @@ public class dHeap<T extends Comparable<? super T>> implements HeapInterface<T> 
     }
 
     /**
-     * Resizes the heap array by creating a new array with double the capacity and copying elements to it.
+     * Resizes the heap array by creating a new array with double the capacity and copying
+     * elements to it.
      * Used when the current heap is full and needs more space to accommodate additional elements.
      */
 

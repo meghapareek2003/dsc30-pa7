@@ -119,7 +119,8 @@ public class MNIST {
      * @return an integer representing the predicted label
      */
     public static int predict(DataHolder[] closestMatches) {
-        int[] counts = new int[10];
+        int arraySize = 10;
+        int[] counts = new int[arraySize];
         for (int i = 0; i < closestMatches.length; i++) {
             DataHolder data = closestMatches[i];
             counts[data.label]++;
