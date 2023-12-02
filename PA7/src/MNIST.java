@@ -3,6 +3,7 @@
  * PID:  TODO
  */
 
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.zip.GZIPInputStream;
@@ -58,8 +59,15 @@ public class MNIST {
          */
         @Override
         public int compareTo(DataHolder d) {
-            // TODO
-            return 0;
+            if (this.priority < d.priority) {
+                return -1;
+            }
+            else if (this.priority > d.priority) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
         }
     }
 
@@ -70,8 +78,16 @@ public class MNIST {
      * @return the Euclidean distance between img1 and img2
      */
     public static float totalDist(float[] img1, float[] img2) throws IllegalArgumentException {
-        // TODO
-        return 0f;
+        if (img1.length != img2.length) {
+            throw new IllegalArgumentException("Array lengths do not match");
+        }
+
+        float sum = 0;
+        for (int i = 0; i < img1.length; i++) {
+            sum += Math.pow(img1[i] - img2[i], 2);
+        }
+
+        return (float) Math.sqrt(sum);
     }
 
     /**
@@ -81,8 +97,16 @@ public class MNIST {
      * @return an array of DataHolders containing the k closest neighbors to image
      */
     public static DataHolder[] getClosestMatches(float[] image, int k) {
-        // TODO
-        return null;
+        MyPriorityQueue<DataHolder> queue = new MyPriorityQueue(NUM_TRAIN);
+        DataHolder[] output = new DataHolder[k];
+        for (int i = 0; i < NUM_TRAIN; i++) {
+            float dist = totalDist(image, TRAIN_IMAGES[i]);
+            queue.offer(new DataHolder(TRAIN_LABELS[i], dist, TRAIN_IMAGES[i]));
+        }
+        for (int i = 0; i < k; i++) {
+                output[i] = queue.poll();
+        }
+        return output;
     }
 
     /**
@@ -92,8 +116,22 @@ public class MNIST {
      * @param closestMatches the array of DataHolders containing the k closest matches
      */
     public static int predict(DataHolder[] closestMatches) {
-        // TODO
-        return 0;
+        int[] counts = new int[10];
+        for (int i = 0; i < closestMatches.length; i++) {
+            DataHolder data = closestMatches[i];
+            counts[data.label]++;
+        }
+        int maxLabelCount = 0;
+        int predictedLabel = -1;
+
+        for (int i = 0; i < counts.length; i++) {
+            if (counts[i] > maxLabelCount) {
+                maxLabelCount = counts[i];
+                predictedLabel = i;
+            }
+        }
+
+        return predictedLabel;
     }
 
     // you can ignore the rest of this file :)
