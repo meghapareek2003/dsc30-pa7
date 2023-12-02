@@ -28,6 +28,17 @@ class dHeapTester {
         assertEquals(10, maxHeap.remove());
         assertEquals(1, maxHeap.size());
 
+        // Testing a min heap
+        dHeap<Integer> minHeap = new dHeap<>(2, 10, false);
+        minHeap.add(10);
+        minHeap.add(5);
+        minHeap.add(20);
+        assertEquals(3, minHeap.size());
+        assertEquals(5, minHeap.remove());
+        assertEquals(2, minHeap.size());
+        assertEquals(10, minHeap.remove());
+        assertEquals(1, minHeap.size());
+
     }
 
     @Test
@@ -57,6 +68,18 @@ class dHeapTester {
         assertEquals(40, maxHeap.remove());
         assertEquals(2, maxHeap.size());
         assertEquals(30, maxHeap.element());
+
+        dHeap<Integer> minHeap = new dHeap<>(3, 10, false);
+        minHeap.add(50);
+        minHeap.add(30);
+        minHeap.add(70);
+        minHeap.add(20);
+        minHeap.add(40);
+        assertEquals(20, minHeap.remove());
+        assertEquals(30, minHeap.remove());
+        assertEquals(40, minHeap.remove());
+        assertEquals(2, minHeap.size());
+        assertEquals(50, minHeap.element());
     }
 
     @Test
@@ -71,6 +94,17 @@ class dHeapTester {
         maxHeap.add(20);
         assertEquals(4, maxHeap.size());
         assertEquals(70, maxHeap.element());
+
+        dHeap<Integer> minHeap = new dHeap<>(3, 10, false);
+        assertEquals(0, minHeap.size());
+        minHeap.add(50);
+        assertEquals(1, minHeap.size());
+        assertEquals(50, minHeap.element());
+        minHeap.add(30);
+        minHeap.add(70);
+        minHeap.add(20);
+        assertEquals(4, minHeap.size());
+        assertEquals(20, minHeap.element());
     }
     @Test
     void testClear() {
@@ -85,7 +119,7 @@ class dHeapTester {
     }
 
     @Test
-    void testElementMaxHeap() {
+    void testElement() {
         dHeap<Integer> maxHeap = new dHeap<>(3, 10, true);
         maxHeap.add(50);
         maxHeap.add(30);
